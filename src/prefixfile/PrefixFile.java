@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,8 +20,8 @@ import java.util.logging.Logger;
  */
 public class PrefixFile {
 
-   public static final String DEFAULT_FROM_DIR = "I:\\media\\pics\\work";
-   public static final String DEFAULT_TO_DIR = "I:\\media\\pics\\D90\\";
+   public static final String DEFAULT_FROM_DIR = "G:\\media\\pictures\\work";
+   public static final String DEFAULT_TO_DIR = "G:\\media\\pictures\\VermontTrainsFoliage2020\\";
    public static final String DEFAULT_PREFIX = "YYYYMMDD-";
 
    private String fromDirString;
@@ -29,7 +31,8 @@ public class PrefixFile {
    public PrefixFile() {
       this.fromDirString = PrefixFile.DEFAULT_FROM_DIR;
       this.toDirString = PrefixFile.DEFAULT_TO_DIR;
-      this.prefix = PrefixFile.createYyyyMmDdPrefix();
+      this.prefix = PrefixFile.createYyyyMmDdHhMmSsPrefix();
+      this.prefix = "20201010-11-";
    }
 
    public String getFromDirString() {
@@ -56,30 +59,53 @@ public class PrefixFile {
       this.prefix = prefix;
    }
 
-   public static String createYyyyMmDdPrefix() {
-      String datePrefix = new String();
+   public static String createYyyyMmDdHhMmSsPrefix() {
+      String dateTimePrefix = new String();
 
-      LocalDate localDate = LocalDate.now();
+      LocalDate ld = LocalDate.now();
+      LocalTime lt = LocalTime.now();;
+      LocalDateTime ldt = lt.atDate(ld);
 
-      int year = localDate.getYear();
-      int month = localDate.getMonthValue();
-      int day = localDate.getDayOfMonth();
+      int year = ldt.getYear();
+      int month = ldt.getMonthValue();
+      int day = ldt.getDayOfMonth();
+      int hour = ldt.getHour();
+      int minute = ldt.getMinute();
+      int second = ldt.getSecond();
 
       //System.out.println("year = " + year);
       //System.out.println("month = " + month);
       //System.out.println("day = " + day);
-      datePrefix = Integer.toString(year);
-      if (month < 10) {
-         datePrefix = datePrefix + "0";
-      }
-      datePrefix = datePrefix + Integer.toString(month);
-      if (day < 10) {
-         datePrefix = datePrefix + "0";
-      }
-      datePrefix = datePrefix + Integer.toString(day);
-      datePrefix = datePrefix + "-";
+      dateTimePrefix = Integer.toString(year);
 
-      return datePrefix;
+      if (month < 10) {
+         dateTimePrefix = dateTimePrefix + "0";
+      }
+      dateTimePrefix = dateTimePrefix + Integer.toString(month);
+
+      if (day < 10) {
+         dateTimePrefix = dateTimePrefix + "0";
+      }
+      dateTimePrefix = dateTimePrefix + Integer.toString(day);
+
+      if (hour < 10) {
+         dateTimePrefix = dateTimePrefix + "0";
+      }
+      dateTimePrefix = dateTimePrefix + Integer.toString(hour);
+
+      if (minute < 10) {
+         dateTimePrefix = dateTimePrefix + "0";
+      }
+      dateTimePrefix = dateTimePrefix + Integer.toString(minute);
+
+      if (second < 10) {
+         dateTimePrefix = dateTimePrefix + "0";
+      }
+      dateTimePrefix = dateTimePrefix + Integer.toString(second);
+
+      dateTimePrefix = dateTimePrefix + "-";
+
+      return dateTimePrefix;
    }
 
    public static void main(String[] args) {
